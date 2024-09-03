@@ -1,17 +1,4 @@
----
-title: "RNASeq Analysis on DT23 treated Cn cells"
-smooth-scroll: true
-format: gfm
-editor:
-  markdown:
-    wrap: 72
-    references: 
-      location: block
-    canonical: true
-execute:
-  echo: true
-  warning: false
----
+# RNASeq Analysis on DT23 treated Cn cells
 
 ### Experimental set-up
 
@@ -50,8 +37,7 @@ library was sequenced at AGRF sequencing facility run on one Novaseq X
 
 2.  Below are the mapping statistics for each of the sample;
 
-```{r align_stats, eval=TRUE, message=FALSE,  fig.height=5, fig.width=7}
-
+``` r
 library(magrittr)
 
 star_dir <- "/Users/pooja/Documents/ARG1_project/rnaseq_3h/03_alignment/for_DT318_paper/"
@@ -65,13 +51,13 @@ names(star_align_log_files) <- gsub(x=basename(star_align_log_files), pattern ="
 parcutils::get_star_align_log_summary_plot(x = star_align_log_files,
                                 col_total_reads = "red4", 
                                 col_mapped_reads  = "red") 
-
 ```
+
+![](README_files/figure-commonmark/align_stats-1.png)
 
 #### Generate count matrix using Rsubread
 
-```{r count_mat, eval=FALSE}
-
+``` r
 source("run_rsubread.R")
 library(magrittr)
 
@@ -91,8 +77,7 @@ readr::write_delim(cc, file = count_file, delim = "\t")
 
 #### DESeq for differential gene expression and normalized count matrix
 
-```{r DESeq, message=FALSE, warning=FALSE}
-
+``` r
 library(magrittr)
 count_file="/Users/pooja/Documents/ARG1_project/DT23_rnaseq_analysis/DT23_Vs_WT_3h_count_mat.txt"
 
@@ -102,7 +87,22 @@ sample_info <- cc %>% colnames() %>% .[-1]  %>%
               tibble::tibble(samples = . , groups = rep(c("Arg1_DT23", "WT","WT_DT23") , each = 3)) 
 
 sample_info
+```
 
+    # A tibble: 9 × 2
+      samples         groups   
+      <chr>           <chr>    
+    1 Arg1_DT318_3h_1 Arg1_DT23
+    2 Arg1_DT318_3h_2 Arg1_DT23
+    3 Arg1_DT318_3h_3 Arg1_DT23
+    4 WT_3h_1         WT       
+    5 WT_3h_2         WT       
+    6 WT_3h_3         WT       
+    7 WT_DT318_3h_1   WT_DT23  
+    8 WT_DT318_3h_2   WT_DT23  
+    9 WT_DT318_3h_3   WT_DT23  
+
+``` r
 res <- parcutils::run_deseq_analysis(counts = cc ,
                          sample_info = sample_info,
                          column_geneid = "gene_name" ,
@@ -114,16 +114,17 @@ res <- parcutils::run_deseq_analysis(counts = cc ,
                          regul_based_upon = 1)
 
 res$de_comparisons
+```
 
+    [1] "WT_DT23_VS_WT"   "Arg1_DT23_VS_WT"
+
+``` r
 deseq_WT_DT318_output <- res$dsr_tibble_deg[1]%>% tibble::as_tibble()
-
-
 ```
 
 #### Normalized count matrix
 
-```{r norm_mat}
-
+``` r
 norm_mat <- parcutils::get_normalised_expression_matrix(x = res, 
                                             samples = NULL,
                                             genes = NULL,
@@ -134,17 +135,18 @@ norm_mat <- parcutils::get_normalised_expression_matrix(x = res,
 
 #### Correlation between replicates
 
-```{r QC, fig.height=10, fig.width=10}
+``` r
 parcutils::get_corr_heatbox(x = res, show_corr_values = T, cluster_samples = F, plot_type = "upper")
 ```
 
-Correlation between triplicates is \~0.99, showing the data is of high
+![](README_files/figure-commonmark/QC-1.png)
+
+Correlation between triplicates is ~0.99, showing the data is of high
 quality and reproducible.
 
 #### MA plot
 
-```{r maplot}
-
+``` r
 deseq_out <- res %>% 
                 tidyr::as_tibble() 
 
@@ -156,11 +158,11 @@ deseq_out$dsr_tibble_deg[[1]] %>%
               ggplot2::geom_hline(yintercept = c(-1,1), linetype=2)+
               ggplot2::theme_classic()+
               ggplot2::ggtitle(res$de_comparisons[1])
-
 ```
 
-```{r deg_stats}
+![](README_files/figure-commonmark/maplot-1.png)
 
+``` r
 deg_table <- deseq_WT_DT318_output$WT_DT23_VS_WT %>% 
                 dplyr::group_by(regul) %>% 
                 dplyr::tally() %>%
@@ -170,13 +172,13 @@ deg_table %>% ggplot2::ggplot(ggplot2::aes(n, regul, label=n))+
               ggplot2::geom_col(fill=c("#16317d","#a40000"), color="black")+
               ggplot2::geom_text(hjust=1, color="white")+
               ggplot2::labs(x="number of genes", y="")
-              
 ```
+
+![](README_files/figure-commonmark/deg_stats-1.png)
 
 #### Expression of genes from Inositol phosphate kinase pathway
 
-```{r Expression_IPK}
-
+``` r
 IP_genes <- tibble::tribble(
                 ~gene_names, ~name,
               "CNAG_02867",     "PLC1",
@@ -199,10 +201,11 @@ IP_genes %>%
             ggplot2::theme_classic()
 ```
 
+![](README_files/figure-commonmark/Expression_IPK-1.png)
+
 ### Functional analysis of the deferentially expressed genes
 
-```{r GO}
-
+``` r
 dat_GO <- readr::read_delim("DT23_Vs_WT_GO.txt", delim="\t", col_names = TRUE) %>% dplyr::mutate(class=forcats::as_factor(class), Name=forcats::as_factor(Name))
 
 dat_GO %>% 
@@ -218,8 +221,9 @@ dat_GO %>%
                  axis.text.x = ggplot2::element_text(angle = 90))
 ```
 
-```{r IP_metabolism}
+![](README_files/figure-commonmark/GO-1.png)
 
+``` r
 MIPS_dt <- tibble::tribble(
                     ~gene_id,  ~LFC,
                 "CNAG_01823", -0.32,
@@ -235,10 +239,11 @@ MIPS_dt %>% dplyr::mutate(gene_id=forcats::as_factor(gene_id)) %>%
   ggplot2::geom_text(vjust=-0.8, position = ggplot2::position_dodge(width = .9))+ ggplot2::theme_bw()
 ```
 
+![](README_files/figure-commonmark/IP_metabolism-1.png)
+
 Inositol phosphate metabolic pathway (KEGG: cng00562)
 
-```{r IPM}
-
+``` r
 dat_IPM <- readr::read_delim("IPM_pathway_LFC.txt", delim="\t", col_names = TRUE)
 
 dat_IPM %>% 
@@ -250,3 +255,5 @@ dat_IPM %>%
   ggplot2::coord_flip()+
   ggplot2::theme_bw()
 ```
+
+![](README_files/figure-commonmark/IPM-1.png)
