@@ -144,6 +144,8 @@ parcutils::get_corr_heatbox(x = res, show_corr_values = T, cluster_samples = F, 
 Correlation between triplicates is ~0.99, showing the data is of high
 quality and reproducible.
 
+### WT+DT23 Vs WT
+
 #### MA plot
 
 ``` r
@@ -161,6 +163,8 @@ deseq_out$dsr_tibble_deg[[1]] %>%
 ```
 
 ![](README_files/figure-commonmark/maplot-1.png)
+
+#### Stats of Deferentially Expressed Genes (DEGs)
 
 ``` r
 deg_table <- deseq_WT_DT318_output$WT_DT23_VS_WT %>% 
@@ -205,6 +209,9 @@ IP_genes %>%
 
 ### Functional analysis of the deferentially expressed genes
 
+Gene ontology enrichment was performed on DEGs using C. neoformans H99
+strain as background on FungiDb.
+
 ``` r
 dat_GO <- readr::read_delim("DT23_Vs_WT_GO.txt", delim="\t", col_names = TRUE) %>% dplyr::mutate(class=forcats::as_factor(class), Name=forcats::as_factor(Name))
 
@@ -222,6 +229,8 @@ dat_GO %>%
 ```
 
 ![](README_files/figure-commonmark/GO-1.png)
+
+#### Genes acting up-stream of IPK pathway
 
 ``` r
 MIPS_dt <- tibble::tribble(
@@ -241,7 +250,7 @@ MIPS_dt %>% dplyr::mutate(gene_id=forcats::as_factor(gene_id)) %>%
 
 ![](README_files/figure-commonmark/IP_metabolism-1.png)
 
-Inositol phosphate metabolic pathway (KEGG: cng00562)
+#### Inositol phosphate metabolic pathway (KEGG: cng00562)
 
 ``` r
 dat_IPM <- readr::read_delim("IPM_pathway_LFC.txt", delim="\t", col_names = TRUE)
