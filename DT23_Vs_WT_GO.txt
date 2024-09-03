@@ -1,0 +1,28 @@
+Name	Pct_of_bgd	Pvalue	class
+chitin metabolic process	37.5	0.037214973	up
+electron transport chain	27.8	0.027130949	up
+phosphate ion transport	100	0.009830741	up
+attachment of spindle microtubules to kinetochore	57.1	0.00262758	up
+chromosome segregation	38.5	0.00010372	up
+negative regulation of mitotic cell cycle	50	0.015455431	up
+cell division	32.1	7.27E-06	up
+mitotic cell cycle	33.3	0.003063069	up
+response to heat	17.9	0.000929374	up
+ncRNA processing	28.8	4.44E-09	up
+GMP biosynthetic process	100	0.009830741	up
+rRNA processing	34.3	2.18E-08	up
+maturation of 5.8S rRNA	100	0.000972123	up
+ribosome biogenesis	35.9	5.62E-13	up
+translation	25.1	3.17E-10	up
+obsolete oxidation-reduction process	12.2	3.81E-08	down
+trehalose catabolic process	100	0.049814417	down
+hydrogen peroxide catabolic process	50	0.013873554	down
+response to cyclosporin A	28.6	0.043968254	down
+urea catabolic process	100	0.049814417	down
+lipid modification	30	0.011292578	down
+fatty acid beta-oxidation using acyl-CoA oxidase	100	0.049814417	down
+formate catabolic process	100	0.049814417	down
+glycogen catabolic process	100	0.049814417	down
+glucan catabolic process	40	0.022366721	down
+transmembrane transport	8.3	0.004169933	down
+energy reserve metabolic process	100	0.000122234	down
