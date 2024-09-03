@@ -1,0 +1,4 @@
+- source: README.qmd
+  quarto-pub:
+    - id: 8664d233-3762-4dda-98d7-c6b14db18364
+      url: 'https://sethiyap.quarto.pub/rnaseq-analysis-on-dt23-treated-cn-cells'

@@ -200,7 +200,7 @@ IP_genes %>%
 
 ### Functional analysis of the deferentially expressed genes
 
-```{r GO, "fig.height"=60, "fig.width"=100}
+```{r GO}
 
 dat_GO <- readr::read_delim("DT23_Vs_WT_GO.txt", delim="\t", col_names = TRUE) %>% dplyr::mutate(class=forcats::as_factor(class), Name=forcats::as_factor(Name))
 
@@ -209,7 +209,7 @@ dat_GO %>%
   ggplot2::coord_flip()+
   ggplot2::geom_col(color="black")+
   ggplot2::scale_fill_manual(values=c("#a40000","#16317d"))+
-  ggplot2::facet_wrap(~class, scales="free")+
+  ggplot2::facet_wrap(~class, scales="free", ncol = 1)+
   ggplot2::scale_y_continuous(trans = "reverse")+
   ggplot2::theme_bw(base_size = 14)+
   ggplot2::theme(axis.text = ggplot2::element_text(color="black"),
@@ -230,10 +230,8 @@ MIPS_dt <- tibble::tribble(
                 )
 
 MIPS_dt %>% dplyr::mutate(gene_id=forcats::as_factor(gene_id)) %>%
-            ggplot2::ggplot(ggplot2::aes(gene_id, LFC, label=round(LFC,2)))+
-            ggplot2::geom_col(fill="gold3", color="black")+
-  ggplot2::geom_text(vjust=-0.8, position = ggplot2::position_dodge(width = .9))+
-  ggplot2::theme_bw()
+            ggplot2::ggplot(ggplot2::aes(gene_id, LFC, label=round(LFC,2)))+ ggplot2::geom_col(fill="gold3", color="black")+
+  ggplot2::geom_text(vjust=-0.8, position = ggplot2::position_dodge(width = .9))+ ggplot2::theme_bw()
 ```
 
 Inositol phosphate metabolic pathway (KEGG: cng00562)
@@ -241,7 +239,6 @@ Inositol phosphate metabolic pathway (KEGG: cng00562)
 ```{r IPM}
 
 dat_IPM <- readr::read_delim("IPM_pathway_LFC.txt", delim="\t", col_names = TRUE)
-
 
 dat_IPM %>% 
   dplyr::arrange(log2FoldChange) %>%
