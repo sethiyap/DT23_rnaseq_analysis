@@ -113,12 +113,7 @@ res <- parcutils::run_deseq_analysis(counts = cc ,
                          group_denominator = c("WT"),
                          regul_based_upon = 1)
 
-res$de_comparisons
-```
 
-    [1] "WT_DT23_VS_WT"   "Arg1_DT23_VS_WT"
-
-``` r
 deseq_WT_DT318_output <- res$dsr_tibble_deg[1]%>% tibble::as_tibble()
 ```
 
