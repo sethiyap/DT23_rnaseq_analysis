@@ -142,7 +142,7 @@ quality and reproducible.
 
 ### WT+DT23 Vs WT
 
-#### MA plot 
+#### MA plot
 
 ```{r maplot}
 
